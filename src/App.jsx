@@ -1,14 +1,21 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import gameLogic from "./logic/gameLogic.js";
 import "./App.css";
 
 function App() {
   const [guess, setGuess] = useState("");
+  const [wordArray, setWordArray] = useState([]);
+  const [correct, setCorrect] = useState(false);
 
   useEffect(() => {
     gameLogic.setWord();
-    console.log();
+    console.log(gameLogic.getWord());
   }, []);
+
+  const handleCheck = (e) => {
+    e.preventDefault();
+    setCorrect(gameLogic.checkGuess(guess));
+  };
 
   return (
     <>
@@ -17,7 +24,9 @@ function App() {
         onChange={(e) => setGuess(e.target.value)}
         type="text"
       />
-      Correct Guess: {gameLogic.checkGuess(guess).toString()}
+      <br />
+      <button onClick={handleCheck}>Check</button>
+      Correct Guess: {correct.toString()}
     </>
   );
 }
